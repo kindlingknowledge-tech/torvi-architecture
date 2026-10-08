@@ -1,0 +1,12 @@
+name: sensitive-data-scan
+on: [push, pull_request]
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Load private term list
+        env:
+          SENSITIVE_TERMS: ${{ secrets.SENSITIVE_TERMS }}
+        run: printf '%s\n' "$SENSITIVE_TERMS" > .sensitive-terms
+      - run: ./scripts/scan_sensitive.sh
