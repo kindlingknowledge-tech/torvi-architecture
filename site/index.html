@@ -223,7 +223,7 @@ table.pat td em{font-style:normal;color:var(--text)}
       <div class="diagram-scroll">
         <svg viewBox="0 0 1000 790" role="img" aria-labelledby="dgTitle dgDesc" font-family="Inter, system-ui, sans-serif">
           <title id="dgTitle">Torvi conceptual architecture</title>
-          <desc id="dgDesc">Admins reach Torvi through a web console and residents through WhatsApp. Both pass a trust gate. The admin write path goes to admin services that record expenses and payments in the society ledger. The resident read path goes to a conversational agent, backed by an external LLM service, that reads the ledger and society knowledge. Data is stored per society with an append-only audit trail.</desc>
+          <desc id="dgDesc">Admins reach Torvi through a web console and residents through WhatsApp. Both pass a trust gate. The admin write path goes to admin services that record expenses and payments in the society ledger. The resident read path goes to an AI agent, backed by an external foundation model, that calls read-only tools over the ledger and a RAG knowledge index. Data is stored per society with an append-only audit trail.</desc>
           <defs>
             <marker id="mt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9z" fill="#2dd4bf"/></marker>
             <marker id="ma" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9z" fill="#fbbf24"/></marker>
@@ -263,7 +263,7 @@ table.pat td em{font-style:normal;color:var(--text)}
           <!-- trust gate -->
           <rect x="180" y="244" width="640" height="58" rx="10" fill="rgba(225,29,72,.08)" stroke="#fb7185" stroke-opacity=".7"/>
           <text x="500" y="268" text-anchor="middle" font-size="14" font-weight="700" fill="#fb7185">Trust gate</text>
-          <text x="500" y="288" text-anchor="middle" font-size="11.5" fill="#c8d4e8">verify source · identify person · resolve role and society · rate-limit · filter</text>
+          <text x="500" y="288" text-anchor="middle" font-size="11.5" fill="#c8d4e8">verify source · identify person · resolve role and society · rate-limit · input guardrails</text>
 
           <!-- interaction -->
           <rect x="180" y="342" width="300" height="66" rx="10" fill="#0f1a2e" stroke="#fbbf24" stroke-opacity=".7"/>
@@ -271,9 +271,9 @@ table.pat td em{font-style:normal;color:var(--text)}
           <text x="330" y="387" text-anchor="middle" font-size="11" fill="#7d8ca5">validated · idempotent · step-up auth</text>
           <text x="330" y="401" text-anchor="middle" font-size="10" fill="#fbbf24" font-family="JetBrains Mono, monospace">WRITE PATH</text>
           <rect x="520" y="342" width="300" height="66" rx="10" fill="#0f1a2e" stroke="#a78bfa" stroke-opacity=".7"/>
-          <text x="670" y="368" text-anchor="middle" font-size="14" font-weight="600" fill="#eef3ff">Conversational agent</text>
-          <text x="670" y="387" text-anchor="middle" font-size="11" fill="#7d8ca5">understands intent · calls read-only tools</text>
-          <text x="670" y="401" text-anchor="middle" font-size="10" fill="#a78bfa" font-family="JetBrains Mono, monospace">READ PATH</text>
+          <text x="670" y="368" text-anchor="middle" font-size="14" font-weight="600" fill="#eef3ff">AI agent</text>
+          <text x="670" y="387" text-anchor="middle" font-size="11" fill="#7d8ca5">reasoning loop · tool calling</text>
+          <text x="670" y="401" text-anchor="middle" font-size="10" fill="#a78bfa" font-family="JetBrains Mono, monospace">READ-ONLY TOOLS</text>
 
           <!-- domain -->
           <rect x="180" y="448" width="150" height="66" rx="10" fill="#0f1a2e" stroke="rgba(255,255,255,.18)"/>
@@ -291,8 +291,8 @@ table.pat td em{font-style:normal;color:var(--text)}
           <text x="415" y="580" text-anchor="middle" font-size="13" font-weight="600" fill="#eef3ff">Operational store</text>
           <text x="415" y="598" text-anchor="middle" font-size="11" fill="#7d8ca5">partitioned by society · encrypted at rest · append-only audit trail</text>
           <rect x="670" y="554" width="150" height="62" rx="10" fill="rgba(217,119,6,.06)" stroke="#fbbf24" stroke-opacity=".3"/>
-          <text x="745" y="580" text-anchor="middle" font-size="13" font-weight="600" fill="#eef3ff">Knowledge index</text>
-          <text x="745" y="598" text-anchor="middle" font-size="11" fill="#7d8ca5">searchable docs</text>
+          <text x="745" y="580" text-anchor="middle" font-size="13" font-weight="600" fill="#eef3ff">Vector index</text>
+          <text x="745" y="598" text-anchor="middle" font-size="11" fill="#7d8ca5">embeddings · RAG</text>
 
           <text x="500" y="656" text-anchor="middle" font-size="11.5" fill="#7d8ca5">Every read and write passes the trust gate · the AI never touches the write path</text>
 
@@ -302,8 +302,8 @@ table.pat td em{font-style:normal;color:var(--text)}
           <text x="922" y="136" text-anchor="middle" font-size="13" font-weight="600" fill="#eef3ff">Messaging API</text>
           <text x="922" y="154" text-anchor="middle" font-size="11" fill="#7d8ca5">delivery · codes</text>
           <rect x="860" y="342" width="124" height="66" rx="10" fill="none" stroke="#a78bfa" stroke-opacity=".7" stroke-dasharray="5 4"/>
-          <text x="922" y="370" text-anchor="middle" font-size="13" font-weight="600" fill="#eef3ff">LLM service</text>
-          <text x="922" y="388" text-anchor="middle" font-size="11" fill="#7d8ca5">reasoning</text>
+          <text x="922" y="370" text-anchor="middle" font-size="13" font-weight="600" fill="#eef3ff">Foundation model</text>
+          <text x="922" y="388" text-anchor="middle" font-size="11" fill="#7d8ca5">managed LLM</text>
 
           <!-- admin path -->
           <g stroke="#fbbf24" stroke-width="2" fill="none">
@@ -336,9 +336,9 @@ table.pat td em{font-style:normal;color:var(--text)}
             <text x="325" y="192" fill="#fbbf24">token per request</text>
             <text x="695" y="192" fill="#2dd4bf">signed webhook</text>
             <text x="325" y="326" fill="#fbbf24">role + society</text>
-            <text x="695" y="326" fill="#2dd4bf">role + flat</text>
+            <text x="695" y="326" fill="#2dd4bf">trusted context</text>
             <text x="428" y="432" fill="#fbbf24">write once</text>
-            <text x="588" y="432" fill="#2dd4bf">read own flat</text>
+            <text x="588" y="432" fill="#2dd4bf">tool call · own flat</text>
           </g>
 
           <!-- cross-cutting -->
@@ -364,7 +364,7 @@ table.pat td em{font-style:normal;color:var(--text)}
 
     <div class="notes">
       <div class="note"><h3>One gate, two doors</h3><p>Chat and console have different authentication, but both resolve identity, role and society the same way before any logic runs.</p></div>
-      <div class="note"><h3>AI on the read side only</h3><p>The agent can look things up through narrow, permission-checked tools. Every change to money goes through admin services instead.</p></div>
+      <div class="note"><h3>AI on the read side only</h3><p>The agent acts only through narrow, read-only, permission-checked tools. Every change to money goes through admin services instead.</p></div>
       <div class="note"><h3>Domain owns the truth</h3><p>The ledger is the single source of truth for balances. Payments are recorded once and audited; nothing is edited in place.</p></div>
     </div>
   </div>
@@ -381,7 +381,7 @@ table.pat td em{font-style:normal;color:var(--text)}
     <div class="flow">
       <div class="fstep"><i>01</i><b>Receive</b><span>Message arrives from the messaging provider as a signed event.</span></div>
       <div class="fstep key" style="--c:var(--rose)"><i>02</i><b>Gate</b><span>Authenticity, duplicates, rate limits, identity, role and flat.</span></div>
-      <div class="fstep" style="--c:var(--violet)"><i>03</i><b>Reason</b><span>The agent interprets intent and chooses a tool.</span></div>
+      <div class="fstep" style="--c:var(--violet)"><i>03</i><b>Plan &amp; call tool</b><span>The agent works out intent and calls the right read-only tool.</span></div>
       <div class="fstep key" style="--c:var(--rose)"><i>04</i><b>Tool check</b><span>The tool re-checks permission against the identity from the gate.</span></div>
       <div class="fstep" style="--c:var(--green)"><i>05</i><b>Respond</b><span>Answer composed in the user's language and sent back.</span></div>
     </div>
@@ -494,9 +494,9 @@ table.pat td em{font-style:normal;color:var(--text)}
           <tr><td>Chat channel · messaging API</td><td class="mono">WhatsApp Cloud API (Meta)</td></tr>
           <tr><td>Admin web console</td><td class="mono">React SPA · Cloudflare Pages</td></tr>
           <tr><td>Trust gate</td><td class="mono">AWS Lambda webhook · Amazon Cognito (custom auth) · API Gateway JWT authorizer</td></tr>
-          <tr><td>Conversational agent · LLM</td><td class="mono">Amazon Bedrock Agents · Claude</td></tr>
+          <tr><td>AI agent · foundation model</td><td class="mono">Amazon Bedrock Agents · Claude</td></tr>
           <tr><td>Admin services · domain logic</td><td class="mono">AWS Lambda (Python)</td></tr>
-          <tr><td>Knowledge index</td><td class="mono">Amazon Bedrock Knowledge Bases</td></tr>
+          <tr><td>Knowledge base · vector index (RAG)</td><td class="mono">Amazon Bedrock Knowledge Bases</td></tr>
           <tr><td>Operational store · audit trail</td><td class="mono">Amazon DynamoDB (on-demand, point-in-time recovery)</td></tr>
           <tr><td>Infrastructure &amp; observability</td><td class="mono">AWS SAM · CloudWatch · SNS · AWS Mumbai region</td></tr>
         </tbody>
