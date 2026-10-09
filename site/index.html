@@ -142,6 +142,24 @@ table.pat td em{font-style:normal;color:var(--text)}
 .btn-p{background:var(--teal);color:#04201c}
 .btn-s{border:1px solid var(--line2);color:var(--bright)}
 .btn:hover{text-decoration:none;filter:brightness(1.1)}
+.seq svg{min-width:760px}
+.seq-note{font-size:14px;color:var(--text);padding:12px 8px 4px;border-top:1px solid var(--line);margin-top:10px}
+.pipe-card{margin-top:18px}
+.pipe-head{display:flex;align-items:center;gap:10px;margin:0 6px 10px}
+.pipe-head h3{margin:0}
+.pipe-card svg{min-width:760px}
+.hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:48px;align-items:center}
+.hero-flow{margin:0;background:var(--s1);border:1px solid var(--line2);border-radius:18px;padding:18px 14px 8px;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.hero-flow svg{display:block;width:100%;height:auto}
+.faq{display:grid;gap:10px;max-width:860px}
+.faq details{background:var(--s1);border:1px solid var(--line2);border-radius:var(--r)}
+.faq summary{cursor:pointer;list-style:none;padding:16px 20px;color:var(--bright);font-weight:600;font-size:15px;display:flex;justify-content:space-between;gap:12px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--mono);color:var(--dim)}
+.faq details[open] summary::after{content:"−"}
+.faq details p{padding:0 20px 18px;color:var(--dim);font-size:14.5px}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr;gap:28px}.hero-flow{max-width:560px}}
+@media (max-width:520px){.hero-flow{padding:10px 4px 4px;margin:0 -8px}}
 @media (max-width:1000px){.cons{grid-template-columns:1fr}}
 @media (max-width:1000px){
   .flow{grid-template-columns:1fr 1fr}
@@ -162,6 +180,7 @@ table.pat td em{font-style:normal;color:var(--text)}
   .diagram-card{padding:14px 10px 10px}
 }
 </style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://torvi.in/#org", "name": "Torvi Technologies", "url": "https://torvi.in", "description": "WhatsApp-first AI assistant for Indian housing societies.", "address": {"@type": "PostalAddress", "addressLocality": "Hyderabad", "addressCountry": "IN"}, "founder": {"@id": "https://krishnakumarakurathi.com/#person"}, "sameAs": ["https://github.com/kindlingknowledge-tech/torvi-architecture"]}, {"@type": "Person", "@id": "https://krishnakumarakurathi.com/#person", "name": "Eswara Krishna Akurathi", "alternateName": "KK", "jobTitle": "Founder, Torvi Technologies", "url": "https://krishnakumarakurathi.com"}, {"@type": "TechArticle", "headline": "A WhatsApp AI agent for housing societies — Torvi system architecture", "url": "https://architecture.torvi.in", "inLanguage": "en-IN", "author": {"@id": "https://krishnakumarakurathi.com/#person"}, "publisher": {"@id": "https://torvi.in/#org"}, "about": ["Agentic AI", "AI agent security", "Serverless architecture", "WhatsApp"]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What stops the AI showing another flat's dues?", "acceptedAnswer": {"@type": "Answer", "text": "The AI never decides who is asking. The sender is identified from server-side records before the AI runs, and every tool re-checks that identity in code. If the AI is talked into asking for another flat, the tool refuses and the data is never read."}}, {"@type": "Question", "name": "Can the AI make up a balance?", "acceptedAnswer": {"@type": "Answer", "text": "Balances aren't the AI's to invent: every figure is fetched live from the ledger by a tool, and the AI only puts it into a sentence. Automatically checking that the reply repeats the tool's numbers exactly is on the roadmap."}}, {"@type": "Question", "name": "Can someone record a fake payment by chatting?", "acceptedAnswer": {"@type": "Answer", "text": "No. The AI has no tools that change money. Payments are recorded only in the admin console, after a one-time-code sign-in, with role and society re-checked on every request and an audit entry for every change."}}, {"@type": "Question", "name": "What if a payment is submitted twice?", "acceptedAnswer": {"@type": "Answer", "text": "Each submission carries an idempotency key. The first one is saved together with the balance update and audit entry in a single transaction; a repeat with the same key returns the original receipt and writes nothing."}}, {"@type": "Question", "name": "Where is the data, and what is kept?", "acceptedAnswer": {"@type": "Answer", "text": "All resident data stays in AWS's Mumbai region. Chat messages are processed in memory and not stored. Consent is captured at first contact, in line with India's DPDP Rules, and payment records are kept for the seven years accounting rules require."}}, {"@type": "Question", "name": "Which languages does it understand?", "acceptedAnswer": {"@type": "Answer", "text": "English, Hindi, Telugu, and the mixes people actually type, such as Hinglish. The same tools and checks apply whatever the language."}}]}]}</script>
 </head>
 <body>
 
@@ -176,13 +195,15 @@ table.pat td em{font-style:normal;color:var(--text)}
       <a href="#qualities">Qualities</a>
       <a href="#decisions">Decisions</a>
       <a href="#mapping">Engineering</a>
+      <a href="#faq">FAQ</a>
     </div>
     <a class="navcta" href="https://github.com/kindlingknowledge-tech/torvi-architecture">GitHub ↗</a>
   </div>
 </nav>
 
 <header class="top" id="top">
-  <div class="wrap">
+  <div class="wrap hero-grid">
+    <div>
     <div class="eyebrow">Torvi · System architecture</div>
     <h1>A WhatsApp AI agent for housing societies</h1>
     <p class="sub">Designed so the AI can't reveal or change anything it isn't allowed to — even if someone tricks it.</p>
@@ -194,6 +215,44 @@ table.pat td em{font-style:normal;color:var(--text)}
       <span class="fact">Multi-tenant</span>
       <span class="fact">India data residency</span>
     </div>
+    </div>
+    <figure class="hero-flow" aria-labelledby="hfT">
+      <svg viewBox="0 0 520 400" role="img" aria-labelledby="hfT hfD" font-family="Inter, system-ui, sans-serif">
+        <title id="hfT">How the agent handles a message</title>
+        <desc id="hfD">A WhatsApp message is verified and the resident and intent identified. Four branches follow: a dues question fetches the resident's own balance with a read-only tool; a vendor question looks up society knowledge; a request for another flat's dues is politely refused; an unknown number is guided to registration without calling the AI.</desc>
+        <defs><marker id="hf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L9 5L1 9z" fill="#4f6079"/></marker></defs>
+        <rect x="175" y="10" width="170" height="34" rx="17" fill="#0f1a2e" stroke="rgba(255,255,255,.25)"/>
+        <text x="260" y="32" text-anchor="middle" font-size="12.5" font-weight="600" fill="#eef3ff">Message on WhatsApp</text>
+        <line x1="260" y1="44" x2="260" y2="66" stroke="#4f6079" stroke-width="1.5" marker-end="url(#hf)"/>
+        <rect x="120" y="70" width="280" height="62" rx="12" fill="#eef3ff"/>
+        <text x="260" y="96" text-anchor="middle" font-size="14" font-weight="700" fill="#0a1020">Verify · identify · understand</text>
+        <text x="260" y="116" text-anchor="middle" font-size="11" fill="#4f6079">who is asking, which flat, what they want</text>
+        <path d="M260 132V150M65 150H455M65 150V168M195 150V168M325 150V168M455 150V168" stroke="#4f6079" stroke-width="1.5" fill="none"/>
+        <g font-size="11" font-weight="600" text-anchor="middle">
+          <rect x="12" y="170" width="106" height="28" rx="14" fill="#0f1a2e" stroke="#2dd4bf" stroke-opacity=".6"/><text x="65" y="188" fill="#2dd4bf">"My dues?"</text>
+          <rect x="142" y="170" width="106" height="28" rx="14" fill="#0f1a2e" stroke="#2dd4bf" stroke-opacity=".6"/><text x="195" y="188" fill="#2dd4bf">"Plumber?"</text>
+          <rect x="272" y="170" width="106" height="28" rx="14" fill="#0f1a2e" stroke="#fb7185" stroke-opacity=".7"/><text x="325" y="188" fill="#fb7185">"Flat 101's dues"</text>
+          <rect x="402" y="170" width="106" height="28" rx="14" fill="#0f1a2e" stroke="#fbbf24" stroke-opacity=".6"/><text x="455" y="188" fill="#fbbf24">Unknown number</text>
+        </g>
+        <g stroke="#4f6079" stroke-width="1.5"><line x1="65" y1="198" x2="65" y2="220" marker-end="url(#hf)"/><line x1="195" y1="198" x2="195" y2="220" marker-end="url(#hf)"/><line x1="325" y1="198" x2="325" y2="220" marker-end="url(#hf)"/><line x1="455" y1="198" x2="455" y2="220" marker-end="url(#hf)"/></g>
+        <g text-anchor="middle">
+          <rect x="6" y="224" width="118" height="92" rx="12" fill="#eef3ff"/>
+          <text x="65" y="250" font-size="12.5" font-weight="700" fill="#0a1020">Fetch own</text><text x="65" y="266" font-size="12.5" font-weight="700" fill="#0a1020">balance</text>
+          <text x="65" y="288" font-size="10.5" fill="#4f6079">read-only tool</text><text x="65" y="302" font-size="10.5" fill="#4f6079">live from ledger</text>
+          <rect x="136" y="224" width="118" height="92" rx="12" fill="#eef3ff"/>
+          <text x="195" y="250" font-size="12.5" font-weight="700" fill="#0a1020">Look up</text><text x="195" y="266" font-size="12.5" font-weight="700" fill="#0a1020">vendors</text>
+          <text x="195" y="288" font-size="10.5" fill="#4f6079">society knowledge</text><text x="195" y="302" font-size="10.5" fill="#4f6079">via retrieval</text>
+          <rect x="266" y="224" width="118" height="92" rx="12" fill="#ffe4e8" stroke="#fb7185" stroke-width="1.5"/>
+          <text x="325" y="250" font-size="12.5" font-weight="700" fill="#9f1239">Politely</text><text x="325" y="266" font-size="12.5" font-weight="700" fill="#9f1239">refuse</text>
+          <text x="325" y="288" font-size="10.5" fill="#9f1239">not your flat —</text><text x="325" y="302" font-size="10.5" fill="#9f1239">enforced in code</text>
+          <rect x="396" y="224" width="118" height="92" rx="12" fill="#eef3ff"/>
+          <text x="455" y="250" font-size="12.5" font-weight="700" fill="#0a1020">Guide to</text><text x="455" y="266" font-size="12.5" font-weight="700" fill="#0a1020">register</text>
+          <text x="455" y="288" font-size="10.5" fill="#4f6079">AI not called</text><text x="455" y="302" font-size="10.5" fill="#4f6079">zero cost</text>
+        </g>
+        <text x="260" y="352" text-anchor="middle" font-size="11.5" fill="#7d8ca5">Same checks whether the message is in English, Hindi, Telugu or a mix.</text>
+        <text x="260" y="378" text-anchor="middle" font-size="10" fill="#4f6079" font-family="JetBrains Mono, monospace">FICTIONAL SOCIETY · ILLUSTRATIVE</text>
+      </svg>
+    </figure>
   </div>
 </header>
 
@@ -377,23 +436,133 @@ table.pat td em{font-style:normal;color:var(--text)}
       <h2>What happens on each path</h2>
     </div>
 
-    <div class="flow-label first"><h3>Read: a resident asks</h3><span class="tag t-teal">chat</span></div>
-    <div class="flow">
-      <div class="fstep"><i>01</i><b>Receive</b><span>Message arrives from the messaging provider as a signed event.</span></div>
-      <div class="fstep key" style="--c:var(--rose)"><i>02</i><b>Gate</b><span>Authenticity, duplicates, rate limits, identity, role and flat.</span></div>
-      <div class="fstep" style="--c:var(--violet)"><i>03</i><b>Plan &amp; call tool</b><span>The agent works out intent and calls the right read-only tool.</span></div>
-      <div class="fstep key" style="--c:var(--rose)"><i>04</i><b>Tool check</b><span>The tool re-checks permission against the identity from the gate.</span></div>
-      <div class="fstep" style="--c:var(--green)"><i>05</i><b>Respond</b><span>Answer composed in the user's language and sent back.</span></div>
+    <div class="flow-label first"><h3>Read: what happens when someone tries to trick the agent</h3><span class="tag t-teal">chat</span></div>
+    <div class="diagram-card seq">
+      <div class="diagram-scroll">
+        <svg viewBox="0 0 900 430" role="img" aria-labelledby="sqT sqD" font-family="Inter, system-ui, sans-serif">
+          <title id="sqT">Sequence: a resident asks for another flat's dues</title>
+          <desc id="sqD">A resident of flat A-202 asks for flat A-101's dues. The trust gate verifies the sender and attaches trusted context saying the requester is a resident of A-202. The AI agent is persuaded and calls the dues tool for A-101. The tool compares A-101 with the trusted flat A-202, denies the request, and the ledger is never queried. The resident receives a polite refusal.</desc>
+          <defs>
+            <marker id="sq" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L9 5L1 9z" fill="#c8d4e8"/></marker>
+            <marker id="sqv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L9 5L1 9z" fill="#a78bfa"/></marker>
+            <marker id="sqr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L9 5L1 9z" fill="#fb7185"/></marker>
+            <marker id="sqt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L9 5L1 9z" fill="#2dd4bf"/></marker>
+          </defs>
+          <!-- lane heads -->
+          <g font-size="13" font-weight="600" text-anchor="middle" fill="#eef3ff">
+            <rect x="20" y="14" width="130" height="40" rx="9" fill="#0f1a2e" stroke="#2dd4bf" stroke-opacity=".6"/><text x="85" y="39">Resident</text>
+            <rect x="200" y="14" width="130" height="40" rx="9" fill="rgba(225,29,72,.08)" stroke="#fb7185" stroke-opacity=".7"/><text x="265" y="39" fill="#fb7185">Trust gate</text>
+            <rect x="385" y="14" width="130" height="40" rx="9" fill="#0f1a2e" stroke="#a78bfa" stroke-opacity=".7"/><text x="450" y="39">AI agent</text>
+            <rect x="570" y="14" width="130" height="40" rx="9" fill="#0f1a2e" stroke="rgba(255,255,255,.25)"/><text x="635" y="39">Dues tool</text>
+            <rect x="750" y="14" width="130" height="40" rx="9" fill="rgba(217,119,6,.06)" stroke="#fbbf24" stroke-opacity=".35"/><text x="815" y="39">Ledger</text>
+          </g>
+          <g stroke="rgba(255,255,255,.14)" stroke-dasharray="3 5">
+            <line x1="85" y1="54" x2="85" y2="410"/><line x1="265" y1="54" x2="265" y2="410"/><line x1="450" y1="54" x2="450" y2="410"/><line x1="635" y1="54" x2="635" y2="410"/><line x1="815" y1="54" x2="815" y2="410"/>
+          </g>
+
+          <!-- 1 -->
+          <line x1="85" y1="88" x2="259" y2="88" stroke="#2dd4bf" stroke-width="2" marker-end="url(#sqt)"/>
+          <text x="172" y="80" text-anchor="middle" font-size="12" fill="#eef3ff">"Show flat A-101's dues"</text>
+          <!-- 2 gate note -->
+          <rect x="205" y="104" width="120" height="44" rx="7" fill="#162035" stroke="#fb7185" stroke-opacity=".5"/>
+          <text x="265" y="122" text-anchor="middle" font-size="11" fill="#c8d4e8">verified sender</text>
+          <text x="265" y="138" text-anchor="middle" font-size="11" fill="#c8d4e8">resident · A-202</text>
+          <!-- 3 -->
+          <line x1="265" y1="174" x2="444" y2="174" stroke="#c8d4e8" stroke-width="1.6" marker-end="url(#sq)"/>
+          <text x="357" y="166" text-anchor="middle" font-size="11.5" fill="#c8d4e8">message + trusted context</text>
+          <text x="357" y="192" text-anchor="middle" font-size="10.5" fill="#7d8ca5" font-family="JetBrains Mono, monospace">{flat: A-202, role: resident}</text>
+          <!-- 4 -->
+          <line x1="450" y1="226" x2="629" y2="226" stroke="#a78bfa" stroke-width="2" marker-end="url(#sqv)"/>
+          <text x="542" y="218" text-anchor="middle" font-size="11.5" fill="#a78bfa" font-family="JetBrains Mono, monospace">getDues(A-101)</text>
+          <text x="542" y="244" text-anchor="middle" font-size="10.5" fill="#7d8ca5">the model went along with it</text>
+          <!-- 5 tool check -->
+          <rect x="566" y="258" width="138" height="52" rx="8" fill="rgba(225,29,72,.12)" stroke="#fb7185"/>
+          <text x="635" y="279" text-anchor="middle" font-size="11.5" font-weight="600" fill="#fb7185">A-101 ≠ A-202</text>
+          <text x="635" y="297" text-anchor="middle" font-size="11" fill="#fecdd3">denied in code</text>
+          <!-- ledger untouched -->
+          <rect x="760" y="262" width="110" height="44" rx="8" fill="none" stroke="#4f6079" stroke-dasharray="4 4"/>
+          <text x="815" y="281" text-anchor="middle" font-size="11" fill="#7d8ca5">never queried</text>
+          <text x="815" y="297" text-anchor="middle" font-size="13" fill="#7d8ca5">✕</text>
+          <!-- 6 -->
+          <line x1="629" y1="336" x2="456" y2="336" stroke="#fb7185" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#sqr)"/>
+          <text x="542" y="328" text-anchor="middle" font-size="11" fill="#fb7185" font-family="JetBrains Mono, monospace">access_denied</text>
+          <!-- 7 -->
+          <line x1="444" y1="380" x2="91" y2="380" stroke="#2dd4bf" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#sqt)"/>
+          <text x="267" y="372" text-anchor="middle" font-size="11.5" fill="#eef3ff">"You can only view your own flat's dues."</text>
+          <!-- step numbers -->
+          <g font-family="JetBrains Mono, monospace" font-size="10" fill="#4f6079">
+            <text x="8" y="92">1</text><text x="8" y="130">2</text><text x="8" y="178">3</text><text x="8" y="230">4</text><text x="8" y="288">5</text><text x="8" y="340">6</text><text x="8" y="384">7</text>
+          </g>
+        </svg>
+      </div>
+      <div class="scroll-hint">scroll the diagram →</div>
+      <p class="seq-note">The agent was fooled at step 4 and it didn't matter. Identity came from the gate at step 2, not from the message, and the tool enforced it in code at step 5.</p>
     </div>
 
-    <div class="flow-label"><h3>Write: an admin records a payment</h3><span class="tag t-amber">console</span></div>
-    <div class="flow">
-      <div class="fstep" style="--c:var(--amber)"><i>01</i><b>Authenticate</b><span>Passwordless one-time code; short-lived token.</span></div>
-      <div class="fstep key" style="--c:var(--rose)"><i>02</i><b>Gate</b><span>Role and society re-read on every request; step-up for sensitive actions.</span></div>
-      <div class="fstep" style="--c:var(--amber)"><i>03</i><b>Validate</b><span>Amount, mode, reference and an open month.</span></div>
-      <div class="fstep" style="--c:var(--blue)"><i>04</i><b>Commit</b><span>Payment, balance and audit entry saved together — once, even on retry.</span></div>
-      <div class="fstep" style="--c:var(--green)"><i>05</i><b>Reflect</b><span>Updated balance is what residents see on their next question.</span></div>
+    <div class="flow-label"><h3>Write: what happens when a payment is submitted twice</h3><span class="tag t-amber">console</span></div>
+    <div class="diagram-card seq">
+      <div class="diagram-scroll">
+        <svg viewBox="0 0 900 470" role="img" aria-labelledby="swT swD" font-family="Inter, system-ui, sans-serif">
+          <title id="swT">Sequence: an admin's payment is submitted twice</title>
+          <desc id="swD">An admin records a payment for flat A-202 with an idempotency key. The trust gate validates the token and re-reads the admin's role and society. Admin services commit the payment, balance update, audit entry and key in one transaction. The response is lost, so the admin retries with the same key. Admin services find the key already recorded and return the original result without writing again. The balance changes once and the audit trail has one entry.</desc>
+          <defs>
+            <marker id="wa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L9 5L1 9z" fill="#fbbf24"/></marker>
+            <marker id="wg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L9 5L1 9z" fill="#c8d4e8"/></marker>
+            <marker id="wr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L9 5L1 9z" fill="#fb7185"/></marker>
+            <marker id="wn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L9 5L1 9z" fill="#4ade80"/></marker>
+          </defs>
+          <g font-size="13" font-weight="600" text-anchor="middle" fill="#eef3ff">
+            <rect x="35" y="14" width="140" height="40" rx="9" fill="#0f1a2e" stroke="#fbbf24" stroke-opacity=".6"/><text x="105" y="39">Admin · console</text>
+            <rect x="255" y="14" width="140" height="40" rx="9" fill="rgba(225,29,72,.08)" stroke="#fb7185" stroke-opacity=".7"/><text x="325" y="39" fill="#fb7185">Trust gate</text>
+            <rect x="485" y="14" width="140" height="40" rx="9" fill="#0f1a2e" stroke="#fbbf24" stroke-opacity=".7"/><text x="555" y="39">Admin services</text>
+            <rect x="715" y="14" width="150" height="40" rx="9" fill="rgba(217,119,6,.06)" stroke="#fbbf24" stroke-opacity=".35"/><text x="790" y="39">Operational store</text>
+          </g>
+          <g stroke="rgba(255,255,255,.14)" stroke-dasharray="3 5">
+            <line x1="105" y1="54" x2="105" y2="450"/><line x1="325" y1="54" x2="325" y2="450"/><line x1="555" y1="54" x2="555" y2="450"/><line x1="790" y1="54" x2="790" y2="450"/>
+          </g>
+          <!-- 1 -->
+          <line x1="105" y1="88" x2="319" y2="88" stroke="#fbbf24" stroke-width="2" marker-end="url(#wa)"/>
+          <text x="212" y="80" text-anchor="middle" font-size="12" fill="#eef3ff">Record ₹3,412 for A-202</text>
+          <text x="212" y="104" text-anchor="middle" font-size="10.5" fill="#7d8ca5" font-family="JetBrains Mono, monospace">idempotency key K1</text>
+          <!-- 2 -->
+          <rect x="262" y="116" width="126" height="44" rx="7" fill="#162035" stroke="#fb7185" stroke-opacity=".5"/>
+          <text x="325" y="134" text-anchor="middle" font-size="11" fill="#c8d4e8">valid token</text>
+          <text x="325" y="150" text-anchor="middle" font-size="11" fill="#c8d4e8">admin · role re-read</text>
+          <!-- 3 -->
+          <line x1="325" y1="184" x2="549" y2="184" stroke="#c8d4e8" stroke-width="1.6" marker-end="url(#wg)"/>
+          <text x="437" y="176" text-anchor="middle" font-size="11.5" fill="#c8d4e8">request + trusted context</text>
+          <!-- 4 -->
+          <line x1="555" y1="222" x2="784" y2="222" stroke="#fbbf24" stroke-width="2" marker-end="url(#wa)"/>
+          <text x="670" y="214" text-anchor="middle" font-size="11.5" fill="#fbbf24">one transaction</text>
+          <rect x="712" y="236" width="156" height="58" rx="8" fill="rgba(22,163,74,.1)" stroke="#4ade80" stroke-opacity=".7"/>
+          <text x="790" y="256" text-anchor="middle" font-size="11" fill="#eef3ff">payment + balance</text>
+          <text x="790" y="271" text-anchor="middle" font-size="11" fill="#eef3ff">+ audit + key K1</text>
+          <text x="790" y="286" text-anchor="middle" font-size="10" fill="#4ade80">committed together</text>
+          <!-- 5 lost response -->
+          <line x1="549" y1="318" x2="111" y2="318" stroke="#fb7185" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#wr)"/>
+          <text x="330" y="310" text-anchor="middle" font-size="11.5" fill="#fb7185">response lost · network drop</text>
+          <!-- 6 retry -->
+          <line x1="105" y1="356" x2="319" y2="356" stroke="#fbbf24" stroke-width="2" marker-end="url(#wa)"/>
+          <text x="212" y="348" text-anchor="middle" font-size="11.5" fill="#eef3ff">Retry · same key K1</text>
+          <line x1="325" y1="356" x2="549" y2="356" stroke="#c8d4e8" stroke-width="1.6" marker-end="url(#wg)"/>
+          <text x="437" y="348" text-anchor="middle" font-size="10.5" fill="#7d8ca5">checked again</text>
+          <!-- 7 -->
+          <rect x="482" y="370" width="146" height="44" rx="8" fill="rgba(217,119,6,.1)" stroke="#fbbf24"/>
+          <text x="555" y="388" text-anchor="middle" font-size="11" fill="#fbbf24" font-weight="600">K1 already recorded</text>
+          <text x="555" y="404" text-anchor="middle" font-size="10.5" fill="#c8d4e8">no new write</text>
+          <text x="790" y="396" text-anchor="middle" font-size="11" fill="#7d8ca5">untouched</text>
+          <!-- 8 -->
+          <line x1="549" y1="436" x2="111" y2="436" stroke="#4ade80" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#wn)"/>
+          <text x="330" y="428" text-anchor="middle" font-size="11.5" fill="#4ade80">✓ Recorded once · same receipt</text>
+          <g font-family="JetBrains Mono, monospace" font-size="10" fill="#4f6079">
+            <text x="8" y="92">1</text><text x="8" y="142">2</text><text x="8" y="188">3</text><text x="8" y="226">4</text><text x="8" y="322">5</text><text x="8" y="360">6</text><text x="8" y="396">7</text><text x="8" y="440">8</text>
+          </g>
+        </svg>
+      </div>
+      <div class="scroll-hint">scroll the diagram →</div>
+      <p class="seq-note">The retry was harmless: the balance changed once and the audit trail has one entry. Role and society were re-checked on both requests, and the AI isn't on this path at all.</p>
     </div>
+</div>
   </div>
 </section>
 
@@ -414,6 +583,7 @@ table.pat td em{font-style:normal;color:var(--text)}
           <tr><td>Policy at the tool boundary</td><td>The model proposes; code decides. Each tool enforces permissions deterministically, whatever the model asked for.</td></tr>
           <tr><td>Right retrieval for the data</td><td>Documents come through retrieval (RAG); balances and payments come through structured tools — never from embeddings.</td></tr>
           <tr><td>Layered guardrails</td><td>A cheap input filter before the model, permission checks after it, prompt rules last. No single layer is trusted alone.</td></tr>
+          <tr><td>Language-agnostic tools</td><td>The agent understands English, Hindi, Telugu and mixed messages; the tools and data underneath are language-neutral. No translation layer — a dues question in Telugu runs exactly the same check as one in English.</td></tr>
           <tr><td>Right-sized model</td><td>A small, fast model handles conversational reads — quick responses at a cost an 11-flat society can carry.</td></tr>
           <tr><td>Human in the loop <span class="tag t-blue">planned</span></td><td>AI-drafted meeting minutes are approved by an admin before anyone sees them.</td></tr>
         </tbody>
@@ -513,8 +683,52 @@ table.pat td em{font-style:normal;color:var(--text)}
     </div>
     <div class="evo">
       <div class="ev"><span class="tag t-rose">Hardening</span><h3>PII vault &amp; private networking</h3><p>Tokenised identity with customer-managed encryption keys; compute moved onto private network paths.</p></div>
-      <div class="ev"><span class="tag t-blue">New pipeline</span><h3>Event-driven media processing</h3><p>Voice notes → transcription → AI-drafted minutes → admin approval → broadcast, as an asynchronous pipeline.</p></div>
+      <div class="ev"><span class="tag t-blue">New pipeline</span><h3>Event-driven media processing</h3><p>Voice notes become approved minutes through an asynchronous pipeline, with an admin approving before anything is shared (below).</p></div>
       <div class="ev"><span class="tag t-violet">Integration</span><h3>Payment gateway on the write path</h3><p>Gateway callbacks enter through the same gate and admin services, behind a provider-neutral adapter.</p></div>
+    </div>
+    <div class="diagram-card pipe-card">
+      <div class="pipe-head"><h3>Planned pipeline: meeting minutes</h3><span class="tag t-blue">designed</span></div>
+      <div class="diagram-scroll">
+        <svg viewBox="0 0 1000 150" role="img" aria-labelledby="ppT ppD" font-family="Inter, system-ui, sans-serif">
+          <title id="ppT">Planned meeting-minutes pipeline</title>
+          <desc id="ppD">An admin's voice note is transcribed in Hindi, Telugu or English, an AI drafts the minutes, an admin approves them, they are broadcast to residents, and they become searchable through retrieval.</desc>
+          <defs><marker id="pp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L9 5L1 9z" fill="#7d8ca5"/></marker></defs>
+          <g font-size="13" font-weight="600" text-anchor="middle">
+            <rect x="10" y="40" width="140" height="66" rx="10" fill="#0f1a2e" stroke="rgba(255,255,255,.2)"/>
+            <text x="80" y="68" fill="#eef3ff">Voice note</text><text x="80" y="88" font-size="11" font-weight="400" fill="#7d8ca5">from admin</text>
+            <rect x="178" y="40" width="140" height="66" rx="10" fill="#0f1a2e" stroke="rgba(255,255,255,.2)"/>
+            <text x="248" y="68" fill="#eef3ff">Transcribe</text><text x="248" y="88" font-size="11" font-weight="400" fill="#7d8ca5">hi · te · en</text>
+            <rect x="346" y="40" width="140" height="66" rx="10" fill="#0f1a2e" stroke="#a78bfa" stroke-opacity=".7"/>
+            <text x="416" y="68" fill="#eef3ff">AI drafts minutes</text><text x="416" y="88" font-size="11" font-weight="400" fill="#7d8ca5">structured summary</text>
+            <rect x="514" y="32" width="150" height="82" rx="10" fill="rgba(217,119,6,.1)" stroke="#fbbf24"/>
+            <text x="589" y="64" fill="#fbbf24">Admin approves</text><text x="589" y="84" font-size="11" font-weight="400" fill="#c8d4e8">human in the loop</text><text x="589" y="100" font-size="10" font-weight="400" fill="#7d8ca5">nothing is shared before this</text>
+            <rect x="692" y="40" width="140" height="66" rx="10" fill="#0f1a2e" stroke="#2dd4bf" stroke-opacity=".6"/>
+            <text x="762" y="68" fill="#eef3ff">Broadcast</text><text x="762" y="88" font-size="11" font-weight="400" fill="#7d8ca5">to residents</text>
+            <rect x="860" y="40" width="130" height="66" rx="10" fill="rgba(217,119,6,.06)" stroke="#fbbf24" stroke-opacity=".35"/>
+            <text x="925" y="68" fill="#eef3ff">Searchable</text><text x="925" y="88" font-size="11" font-weight="400" fill="#7d8ca5">via RAG</text>
+          </g>
+          <g stroke="#7d8ca5" stroke-width="1.6"><line x1="150" y1="73" x2="174" y2="73" marker-end="url(#pp)"/><line x1="318" y1="73" x2="342" y2="73" marker-end="url(#pp)"/><line x1="486" y1="73" x2="510" y2="73" marker-end="url(#pp)"/><line x1="664" y1="73" x2="688" y2="73" marker-end="url(#pp)"/><line x1="832" y1="73" x2="856" y2="73" marker-end="url(#pp)"/></g>
+          <text x="500" y="140" text-anchor="middle" font-size="11.5" fill="#7d8ca5">Asynchronous and event-driven: long-running steps run outside the chat request, and the AI only drafts.</text>
+        </svg>
+      </div>
+      <div class="scroll-hint">scroll the diagram →</div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="sh">
+      <div class="kicker">09 · Questions</div>
+      <h2>Questions a sceptic would ask</h2>
+    </div>
+    <div class="faq">
+      <details><summary>What stops the AI showing another flat&#39;s dues?</summary><p>The AI never decides who is asking. The sender is identified from server-side records before the AI runs, and every tool re-checks that identity in code. If the AI is talked into asking for another flat, the tool refuses and the data is never read.</p></details>
+      <details><summary>Can the AI make up a balance?</summary><p>Balances aren&#39;t the AI&#39;s to invent: every figure is fetched live from the ledger by a tool, and the AI only puts it into a sentence. Automatically checking that the reply repeats the tool&#39;s numbers exactly is on the roadmap.</p></details>
+      <details><summary>Can someone record a fake payment by chatting?</summary><p>No. The AI has no tools that change money. Payments are recorded only in the admin console, after a one-time-code sign-in, with role and society re-checked on every request and an audit entry for every change.</p></details>
+      <details><summary>What if a payment is submitted twice?</summary><p>Each submission carries an idempotency key. The first one is saved together with the balance update and audit entry in a single transaction; a repeat with the same key returns the original receipt and writes nothing.</p></details>
+      <details><summary>Where is the data, and what is kept?</summary><p>All resident data stays in AWS&#39;s Mumbai region. Chat messages are processed in memory and not stored. Consent is captured at first contact, in line with India&#39;s DPDP Rules, and payment records are kept for the seven years accounting rules require.</p></details>
+      <details><summary>Which languages does it understand?</summary><p>English, Hindi, Telugu, and the mixes people actually type, such as Hinglish. The same tools and checks apply whatever the language.</p></details>
     </div>
   </div>
 </section>
